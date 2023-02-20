@@ -1,0 +1,49 @@
+---
+title: "Evaluation"
+author: "Han Zhang"
+date: "2023-02-19"
+output: html_document
+---
+
+# A prediction instance
+#   with 10 cross validation runs (equal lengths)
+
+```{r}
+library(cutpointr)
+data(suicide)
+head(suicide)
+```
+
+ (0 = low suicidality, 12 = high suicidality)
+
+# make decision
+
+```{r}
+decision = ifelse(suicide$dsi >= 8, "yes", "no")
+table(predict = decision,truth = suicide$suicide )
+```
+- precision =  32 / (32+68) = 0.32
+- recall = 32 / (32 + 4) = 0.89
+
+
+```{r}
+roc_curve <- roc(data = suicide, x = dsi, class = suicide,
+  pos_class = "yes", neg_class = "no", direction = ">=")
+roc_curve
+plot_roc(roc_curve)
+auc(roc_curve)
+```
+
+
+```{r}
+cp <- cutpointr(suicide, dsi, suicide, 
+                method = maximize_metric, metric = sum_sens_spec)
+
+plot(cp)
+
+```
+plot precision recall curve
+```{r}
+plot_precision_recall(cp)
+```
+
