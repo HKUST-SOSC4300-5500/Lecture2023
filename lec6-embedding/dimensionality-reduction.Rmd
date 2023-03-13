@@ -57,7 +57,6 @@ library(gmodels)
 
 X_subset = t(X[1:1500, ])
 
-
 pc <- fast.prcomp(X_subset, retx = TRUE, center = TRUE, scale. = FALSE, tol = NULL)
 
 ```
@@ -65,6 +64,8 @@ pc <- fast.prcomp(X_subset, retx = TRUE, center = TRUE, scale. = FALSE, tol = NU
 ```{r}
 # you can take first several principal components in this way
 pca_vector <- pc$x[,1:2]
+plot(pca_vector)
+pca_vector[pca_vector[,1]>30,]
 ```
 
 tsne
@@ -80,7 +81,7 @@ mx1 <-which.max(embedding[,1])
 embedding[mx1,]
 colnames(X)[mx1]
 
-mx2 <-which.max(embedding[,2])
+mx2 <-which.min(embedding[,2])
 embedding[mx2,]
 colnames(X)[mx2]
 ```
